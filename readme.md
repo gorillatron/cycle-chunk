@@ -2,6 +2,7 @@
 # cycle-chunk
 
 Cycle through an array indefinetly providing a chunk of custom size per iteration.
+Usefull in showing slideshows, panels, tabs and so forth.
 
 **Install:**
 ```bash
