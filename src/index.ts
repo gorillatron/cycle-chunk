@@ -1,9 +1,4 @@
-
-
-export interface Cycler<T> {
-  next(): T[];
-  prev(): T[];
-}
+import { start } from "repl";
 
 
 type NEXT = 1
@@ -15,83 +10,114 @@ const PREV = 2
 type DIRECTION = 0 | NEXT | PREV
 
 
-export default function CycleChunk<T>(array:T[], size: number = 1, startIndex: number = 0):Cycler<T> {
+export default class CycleChunk<T> extends Array {
 
-  let cursor = startIndex
-  let prevDirection:DIRECTION = 0
 
-  const next = (_size:number = size) => {
+  private size:number = 0
+  private cursor:number = 0
+  private prevDirection:DIRECTION = 0
+  private array:T[] = []
+  private _current:T[] = []
+
+  
+  constructor(array:T[], size: number = 1, startIndex: number = 0) {
+    super()
+    this.size = size
+    this.cursor = startIndex
+    this.array = array
+  }
+
+
+  private stepCursorBehind() {
+    for(let iteration = 0; iteration < this.size; iteration++) {
+      if(this.cursor == 0) {
+        this.cursor = this.array.length - 1
+      }
+      else {
+        this.cursor--
+      }
+    }
+  }
+  
+
+  private stepCursorAhead() {
+    for(let iteration = 0; iteration < this.size; iteration++) {
+      if(this.cursor >= this.array.length) {
+        this.cursor = 0
+      }
+      this.cursor++
+    }
+  }
+
+
+  public next() {
     let out:T[] = []
 
-    if(PREV == prevDirection)
-      cursor = stepCursorAhead(cursor, array, _size)
+    if(PREV == this.prevDirection)
+      this.stepCursorAhead()
 
-    for(let iteration = 0; iteration < _size; iteration++) {
-      if(cursor >= array.length) {
-        cursor = 0
+    for(let iteration = 0; iteration < this.size; iteration++) {
+      if(this.cursor >= this.array.length) {
+        this.cursor = 0
       }
-      out.push(array[cursor])
-      cursor++
+      out.push(this.array[this.cursor])
+      this.cursor++
     }
 
-    prevDirection = NEXT
+    this.prevDirection = NEXT
+    this._current = out
 
     return out
   }
 
 
-  const prev = (_size:number = size) => {
-
+  public prev() {
     let out:T[] = []
 
-    if(NEXT == prevDirection)
-      cursor = stepCursorBehind(cursor, array, _size)
+    if(NEXT == this.prevDirection)
+      this.stepCursorBehind()
 
-    for(let iteration = 0; iteration < _size; iteration++) {
-      if(cursor == 0) {
-        cursor = array.length - 1
+    for(let iteration = 0; iteration < this.size; iteration++) {
+      if(this.cursor == 0) {
+        this.cursor = this.array.length - 1
       }
       else {
-        cursor--
+        this.cursor--
       }
-      out.push(array[cursor])
+      out.push(this.array[this.cursor])
     }
 
-    prevDirection = PREV
+    out.reverse()
+    this.prevDirection = PREV
+    this._current = out
 
-    return out.reverse()
+    return out
   }
 
 
-  return {
-    next, prev
-  }  
-}
-
-
-const stepCursorBehind = (cursor:number, array:Array<any>, size:number) => {
-
-  for(let iteration = 0; iteration < size; iteration++) {
-    if(cursor == 0) {
-      cursor = array.length - 1
-    }
-    else {
-      cursor--
-    }
+  get current():T[] {
+    return this.current
   }
 
-  return cursor
-}
 
-
-const stepCursorAhead = (cursor:number, array:Array<any>, size:number) => {
-
-  for(let iteration = 0; iteration < size; iteration++) {
-    if(cursor >= array.length) {
-      cursor = 0
+  get reversed() {
+    const __this = this
+    function* gen() {
+      while(true) {
+        yield __this.prev()
+      }
     }
-    cursor++
+    return gen()
   }
-  
-  return cursor
+
+
+  public * [Symbol.iterator]() {
+    while(true) {
+      yield this.next()
+    }
+  } 
+
+
 }
+
+
