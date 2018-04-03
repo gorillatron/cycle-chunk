@@ -1,32 +1,32 @@
-type NEXT = 1
-const NEXT = 1
+type NEXT = "NEXT"
+const NEXT = "NEXT"
 
-type PREV = 2
-const PREV = 2
+type PREV = "PREV"
+const PREV = "PREV"
 
-type DIRECTION = 0 | NEXT | PREV
+type DIRECTION = "" | NEXT | PREV
 
 
 export default class CycleChunk<T> extends Array {
 
 
-  private size:number = 0
+  private chunkSize:number = 0
   private cursor:number = 0
-  private prevDirection:DIRECTION = 0
+  private prevDirection:DIRECTION = ""
   private array:T[] = []
   private _current:T[] = []
 
   
   constructor(array:T[], size: number = 1, startIndex: number = 0) {
     super()
-    this.size = size
+    this.chunkSize = size
     this.cursor = startIndex
     this.array = array
   }
 
 
   private stepCursorBehind() {
-    for(let iteration = 0; iteration < this.size; iteration++) {
+    for(let iteration = 0; iteration < this.chunkSize; iteration++) {
       if(this.cursor == 0) {
         this.cursor = this.array.length - 1
       }
@@ -38,7 +38,7 @@ export default class CycleChunk<T> extends Array {
   
 
   private stepCursorAhead() {
-    for(let iteration = 0; iteration < this.size; iteration++) {
+    for(let iteration = 0; iteration < this.chunkSize; iteration++) {
       if(this.cursor >= this.array.length) {
         this.cursor = 0
       }
@@ -53,7 +53,7 @@ export default class CycleChunk<T> extends Array {
     if(PREV == this.prevDirection)
       this.stepCursorAhead()
 
-    for(let iteration = 0; iteration < this.size; iteration++) {
+    for(let iteration = 0; iteration < this.chunkSize; iteration++) {
       if(this.cursor >= this.array.length) {
         this.cursor = 0
       }
@@ -74,7 +74,7 @@ export default class CycleChunk<T> extends Array {
     if(NEXT == this.prevDirection)
       this.stepCursorBehind()
 
-    for(let iteration = 0; iteration < this.size; iteration++) {
+    for(let iteration = 0; iteration < this.chunkSize; iteration++) {
       if(this.cursor == 0) {
         this.cursor = this.array.length - 1
       }
@@ -93,7 +93,7 @@ export default class CycleChunk<T> extends Array {
 
 
   get current():T[] {
-    return this.current
+    return this._current
   }
 
 

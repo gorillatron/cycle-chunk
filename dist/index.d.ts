@@ -1,5 +1,5 @@
 export default class CycleChunk<T> extends Array {
-    private size;
+    private chunkSize;
     private cursor;
     private prevDirection;
     private array;

@@ -1,21 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const NEXT = 1;
-const PREV = 2;
+const NEXT = "NEXT";
+const PREV = "PREV";
 class CycleChunk extends Array {
     constructor(array, size = 1, startIndex = 0) {
         super();
-        this.size = 0;
+        this.chunkSize = 0;
         this.cursor = 0;
-        this.prevDirection = 0;
+        this.prevDirection = "";
         this.array = [];
         this._current = [];
-        this.size = size;
+        this.chunkSize = size;
         this.cursor = startIndex;
         this.array = array;
     }
     stepCursorBehind() {
-        for (let iteration = 0; iteration < this.size; iteration++) {
+        for (let iteration = 0; iteration < this.chunkSize; iteration++) {
             if (this.cursor == 0) {
                 this.cursor = this.array.length - 1;
             }
@@ -25,7 +25,7 @@ class CycleChunk extends Array {
         }
     }
     stepCursorAhead() {
-        for (let iteration = 0; iteration < this.size; iteration++) {
+        for (let iteration = 0; iteration < this.chunkSize; iteration++) {
             if (this.cursor >= this.array.length) {
                 this.cursor = 0;
             }
@@ -36,7 +36,7 @@ class CycleChunk extends Array {
         let out = [];
         if (PREV == this.prevDirection)
             this.stepCursorAhead();
-        for (let iteration = 0; iteration < this.size; iteration++) {
+        for (let iteration = 0; iteration < this.chunkSize; iteration++) {
             if (this.cursor >= this.array.length) {
                 this.cursor = 0;
             }
@@ -51,7 +51,7 @@ class CycleChunk extends Array {
         let out = [];
         if (NEXT == this.prevDirection)
             this.stepCursorBehind();
-        for (let iteration = 0; iteration < this.size; iteration++) {
+        for (let iteration = 0; iteration < this.chunkSize; iteration++) {
             if (this.cursor == 0) {
                 this.cursor = this.array.length - 1;
             }
@@ -66,7 +66,7 @@ class CycleChunk extends Array {
         return out;
     }
     get current() {
-        return this.current;
+        return this._current;
     }
     get reversed() {
         const __this = this;
