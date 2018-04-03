@@ -19,9 +19,9 @@ cyclechunk.next() == [1,2,3]
 cyclechunk.next() == [4,5,6]
 cyclechunk.next() == [7,1,2]
 
-cyclechunk.prev(), [4,5,6])
-cyclechunk.prev(), [1,2,3])
-cyclechunk.prev(), [5,6,7])
+cyclechunk.prev() == [4,5,6])
+cyclechunk.prev() == [1,2,3])
+cyclechunk.prev() == [5,6,7])
 ```
 
 
