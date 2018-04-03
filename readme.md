@@ -27,4 +27,4 @@ cyclechunk.next().value == [5,6,7]
 
 ## API
 
-### CycleChunk<T>(array:T[], size: number, startIndex: number): IterableIterator<T[]>
+### function CycleChunk<T>(array:T[], size: number, startIndex: number): IterableIterator<T[]>
