@@ -6,84 +6,86 @@ export interface Cycler<T> {
 }
 
 
+type NEXT = 1
 const NEXT = 1
+
+type PREV = 2
 const PREV = 2
 
 
 export default function CycleChunk<T>(array:T[], size: number = 1, startIndex: number = 0):Cycler<T> {
 
   let cursor = startIndex
-  let lastDirection:number = 0
+  let prevDirection:number = 0
 
-  if(size > array.length)
-    throw new RangeError("chunk size cannot be bigger than given array")
 
-  const jumpCursor = (direction:number) => {
-    switch(direction) {
+  const next = (_size:number = size) => {
+    let out:T[] = []
 
-      case NEXT:
-        if(cursor + size > array.length) {
-          cursor = (cursor + size) - array.length
-        }
-        else {
-          cursor = cursor + size
-        }
-        break
-      
-      case PREV:
-        if((cursor - size) < 0) {
-          cursor = array.length - (size - cursor)
-        }
-        else {
-          cursor = cursor - size
-        }
-        break
+    if(PREV == prevDirection)
+      cursor = stepCursorAhead(cursor, array, _size)
 
+    for(let iteration = 0; iteration < _size; iteration++) {
+      if(cursor >= array.length) {
+        cursor = 0
+      }
+      out.push(array[cursor])
+      cursor++
     }
+
+    prevDirection = NEXT
+
+    return out
   }
 
-  return {
 
-    next() {
-      if(lastDirection == PREV) {
-        jumpCursor(NEXT)
-      }
-      let out = chunk(array, size, cursor)
-      jumpCursor(NEXT)
-      lastDirection = NEXT
-      return out
-    },
+  const prev = (_size:number = size) => {
+    let out:T[] = []
 
-    prev() {
-      jumpCursor(PREV)
-      if(lastDirection == NEXT) {
-        jumpCursor(PREV)
+    if(NEXT == prevDirection)
+      cursor = stepCursorBehind(cursor, array, _size)
+
+    for(let iteration = 0; iteration < _size; iteration++) {
+      if(cursor == 0) {
+        cursor = array.length - 1
       }
-      let out = chunk(array, size, cursor)
-      lastDirection = PREV
-      return out
+      else {
+        cursor--
+      }
+      out.push(array[cursor])
     }
 
+    prevDirection = PREV
+
+    return out.reverse()
+  }
+
+
+  return {
+    next, prev
   }  
 }
 
 
-
-const chunk = <T>(array:T[], size: number = 1, startIndex: number = 0):T[] => {
-
-  if(startIndex > array.length) {
-    startIndex = 0
+const stepCursorBehind = (cursor:number, array:Array<any>, size:number) => {
+  for(let iteration = 0; iteration < size; iteration++) {
+    if(cursor == 0) {
+      cursor = array.length - 1
+    }
+    else {
+      cursor--
+    }
   }
+  return cursor
+}
 
-  var out:T[] = []
 
-  for(var iteration = 0; iteration < size; iteration++) {
-    var index = startIndex + iteration
-    if(index < array.length)
-      out = out.concat([array[index]])
-    else
-      out = out.concat([array[iteration - (array.length - startIndex)]])
+const stepCursorAhead = (cursor:number, array:Array<any>, size:number) => {
+  for(let iteration = 0; iteration < size; iteration++) {
+    if(cursor >= array.length) {
+      cursor = 0
+    }
+    cursor++
   }
-
-  return out
+  return cursor
 }

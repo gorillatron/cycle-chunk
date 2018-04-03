@@ -52,6 +52,25 @@ ava.test('should work with size as big as array', (t) => {
     t.deepEqual(cyclechunk.next(), [1, 2, 3, 4, 5, 6, 7]);
     t.deepEqual(cyclechunk.next(), [1, 2, 3, 4, 5, 6, 7]);
     t.deepEqual(cyclechunk.next(), [1, 2, 3, 4, 5, 6, 7]);
+    t.deepEqual(cyclechunk.prev(), [1, 2, 3, 4, 5, 6, 7]);
+});
+ava.test('should work with size bigger than array', (t) => {
+    const cyclechunk = index_1.default(fixture, 8);
+    t.deepEqual(cyclechunk.next(), [1, 2, 3, 4, 5, 6, 7, 1]);
+    t.deepEqual(cyclechunk.next(), [2, 3, 4, 5, 6, 7, 1, 2]);
+    t.deepEqual(cyclechunk.next(), [3, 4, 5, 6, 7, 1, 2, 3]);
+    t.deepEqual(cyclechunk.prev(), [2, 3, 4, 5, 6, 7, 1, 2]);
+    t.deepEqual(cyclechunk.prev(), [1, 2, 3, 4, 5, 6, 7, 1]);
+    t.deepEqual(cyclechunk.prev(), [7, 1, 2, 3, 4, 5, 6, 7]);
+    t.deepEqual(cyclechunk.next(), [1, 2, 3, 4, 5, 6, 7, 1]);
+});
+ava.test('should work with size many times than array', (t) => {
+    const cyclechunk = index_1.default(fixture, 25);
+    t.deepEqual(cyclechunk.next(), [1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4]);
+    t.deepEqual(cyclechunk.next(), [5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1]);
+    t.deepEqual(cyclechunk.prev(), [1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4]);
+    t.deepEqual(cyclechunk.prev(), [4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7]);
+    t.deepEqual(cyclechunk.next(), [1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4]);
 });
 ava.test('should work with size bigger than half array size', (t) => {
     const cyclechunk = index_1.default(fixture, 6);
