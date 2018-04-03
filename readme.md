@@ -15,16 +15,25 @@ import CycleChunk from 'cycle-chunk'
 
 const cyclechunk = CycleChunk([1,2,3,4,5,6,7], 3)
   
-cyclechunk.next().value == [1,2,3]
-cyclechunk.next().value == [4,5,6]
-cyclechunk.next().value == [7,1,2]
-cyclechunk.next().value == [3,4,5]
-cyclechunk.next().value == [6,7,1]
-cyclechunk.next().value == [2,3,4]
-cyclechunk.next().value == [5,6,7]
+cyclechunk.next() == [1,2,3]
+cyclechunk.next() == [4,5,6]
+cyclechunk.next() == [7,1,2]
+
+cyclechunk.prev(), [4,5,6])
+cyclechunk.prev(), [1,2,3])
+cyclechunk.prev(), [5,6,7])
 ```
 
 
-## API
+# API
 
-### function CycleChunk<T>(array:T[], size: number, startIndex: number): IterableIterator<T[]>
+## function CycleChunk\<T>(array:T[], size: number, startIndex: number): Cycler\<T>
+Returns a `Cycler` object with next() and prev() methods.
+
+## interface Cycler<T>
+```typescript
+interface Cycler {
+  next(): T[];
+  prev(): T[];
+}
+```

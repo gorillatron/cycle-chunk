@@ -1,14 +1,46 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function* CycleChunk(array, size = 1, startIndex = 0) {
-    let index = startIndex;
-    while (true) {
-        if (index + 1 > array.length) {
-            index = index - array.length;
+const NEXT = 1;
+const PREV = 2;
+function CycleChunk(array, size = 1, startIndex = 0) {
+    let cursor = startIndex;
+    let lastDirection = 0;
+    const jumpCursorAhead = () => {
+        if (cursor + size > array.length) {
+            cursor = (cursor + size) - array.length;
         }
-        yield chunk(array, size, index);
-        index = index + size;
-    }
+        else {
+            cursor = cursor + size;
+        }
+    };
+    const jumpCursorBehind = () => {
+        if ((cursor - size) < 0) {
+            cursor = array.length - (size - cursor);
+        }
+        else {
+            cursor = cursor - size;
+        }
+    };
+    return {
+        next() {
+            if (lastDirection == PREV) {
+                jumpCursorAhead();
+            }
+            let out = chunk(array, size, cursor);
+            jumpCursorAhead();
+            lastDirection = NEXT;
+            return out;
+        },
+        prev() {
+            jumpCursorBehind();
+            if (lastDirection == NEXT) {
+                jumpCursorBehind();
+            }
+            let out = chunk(array, size, cursor);
+            lastDirection = PREV;
+            return out;
+        }
+    };
 }
 exports.default = CycleChunk;
 const chunk = (array, size = 1, startIndex = 0) => {
