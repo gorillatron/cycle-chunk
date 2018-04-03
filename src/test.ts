@@ -2,24 +2,8 @@
 import * as ava from 'ava'
 import CycleChunk from './index'
 
+
 const fixture = [1,2,3,4,5,6,7]
-
-if(console) {
-  ava.test('performance', t => {
-    const iterations = 9999999
-    const array = [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8,9,1,2,3,4,5,67,78,8,7,4,23,2,1,3]
-    const chunkSize = 10
-    console.log('running next()', {iterations, arraySize: array.length, chunkSize})
-    console.time("time spent")
-    const cyclechunk = new CycleChunk<number>(array, chunkSize)
-    for(var iteration = 0; iteration < iterations; iteration++) {
-      cyclechunk.next()
-    }
-    console.timeEnd("time spent")
-    t.is(1,1)
-  })
-}
-
 
 
 ava.test('cycling starting with next', (t) => {
