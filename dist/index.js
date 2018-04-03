@@ -5,36 +5,42 @@ const PREV = 2;
 function CycleChunk(array, size = 1, startIndex = 0) {
     let cursor = startIndex;
     let lastDirection = 0;
-    const jumpCursorAhead = () => {
-        if (cursor + size > array.length) {
-            cursor = (cursor + size) - array.length;
-        }
-        else {
-            cursor = cursor + size;
-        }
-    };
-    const jumpCursorBehind = () => {
-        if ((cursor - size) < 0) {
-            cursor = array.length - (size - cursor);
-        }
-        else {
-            cursor = cursor - size;
+    if (size > array.length)
+        throw new RangeError("chunk size cannot be bigger than given array");
+    const jumpCursor = (direction) => {
+        switch (direction) {
+            case NEXT:
+                if (cursor + size > array.length) {
+                    cursor = (cursor + size) - array.length;
+                }
+                else {
+                    cursor = cursor + size;
+                }
+                break;
+            case PREV:
+                if ((cursor - size) < 0) {
+                    cursor = array.length - (size - cursor);
+                }
+                else {
+                    cursor = cursor - size;
+                }
+                break;
         }
     };
     return {
         next() {
             if (lastDirection == PREV) {
-                jumpCursorAhead();
+                jumpCursor(NEXT);
             }
             let out = chunk(array, size, cursor);
-            jumpCursorAhead();
+            jumpCursor(NEXT);
             lastDirection = NEXT;
             return out;
         },
         prev() {
-            jumpCursorBehind();
+            jumpCursor(PREV);
             if (lastDirection == NEXT) {
-                jumpCursorBehind();
+                jumpCursor(PREV);
             }
             let out = chunk(array, size, cursor);
             lastDirection = PREV;
