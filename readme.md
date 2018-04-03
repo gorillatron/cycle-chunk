@@ -13,7 +13,7 @@ npm i cycle-chunk
 ```js
 import CycleChunk from 'cycle-chunk'
 
-const cyclechunk = CycleChunk([1,2,3,4,5,6,7], 3)
+const cyclechunk = new CycleChunk([1,2,3,4,5,6,7], 3)
   
 cyclechunk.next() == [1,2,3]
 cyclechunk.next() == [4,5,6]
@@ -27,13 +27,10 @@ cyclechunk.prev(), [5,6,7])
 
 # API
 
-## function CycleChunk\<T>(array:T[], size: number, startIndex: number): Cycler\<T>
-Returns a `Cycler` object with next() and prev() methods.
-
-## interface Cycler<T>
-```typescript
-interface Cycler {
-  next(): T[];
-  prev(): T[];
-}
-```
+## class CycleChunk\<T> extends Array
+### **constructor(array:T[], size?: number = 0, startIndex?: number = 0)**
+### **next():T[]**
+### **prev():T[]**
+### **current():T[]**
+### **public reversed: IterableIterator<T[]>**
+### **public \* \[Symbol.iterator\]():IterableIterator<T[]>**
