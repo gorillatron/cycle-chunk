@@ -9,7 +9,7 @@ function CycleChunk(array, size = 1, startIndex = 0) {
         let out = [];
         if (PREV == prevDirection)
             cursor = stepCursorAhead(cursor, array, _size);
-        for (let iteration = 0; iteration < _size; iteration++) {
+        for (var iteration = 0; iteration < _size; iteration++) {
             if (cursor >= array.length) {
                 cursor = 0;
             }
@@ -23,7 +23,7 @@ function CycleChunk(array, size = 1, startIndex = 0) {
         let out = [];
         if (NEXT == prevDirection)
             cursor = stepCursorBehind(cursor, array, _size);
-        for (let iteration = 0; iteration < _size; iteration++) {
+        for (var iteration = 0; iteration < _size; iteration++) {
             if (cursor == 0) {
                 cursor = array.length - 1;
             }

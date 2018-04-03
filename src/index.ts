@@ -12,11 +12,13 @@ const NEXT = 1
 type PREV = 2
 const PREV = 2
 
+type DIRECTION = 0 | NEXT | PREV
+
 
 export default function CycleChunk<T>(array:T[], size: number = 1, startIndex: number = 0):Cycler<T> {
 
   let cursor = startIndex
-  let prevDirection:number = 0
+  let prevDirection:DIRECTION = 0
 
 
   const next = (_size:number = size) => {
