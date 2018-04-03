@@ -20,7 +20,6 @@ export default function CycleChunk<T>(array:T[], size: number = 1, startIndex: n
   let cursor = startIndex
   let prevDirection:DIRECTION = 0
 
-
   const next = (_size:number = size) => {
     let out:T[] = []
 
@@ -42,6 +41,7 @@ export default function CycleChunk<T>(array:T[], size: number = 1, startIndex: n
 
 
   const prev = (_size:number = size) => {
+
     let out:T[] = []
 
     if(NEXT == prevDirection)
@@ -70,6 +70,7 @@ export default function CycleChunk<T>(array:T[], size: number = 1, startIndex: n
 
 
 const stepCursorBehind = (cursor:number, array:Array<any>, size:number) => {
+
   for(let iteration = 0; iteration < size; iteration++) {
     if(cursor == 0) {
       cursor = array.length - 1
@@ -78,16 +79,19 @@ const stepCursorBehind = (cursor:number, array:Array<any>, size:number) => {
       cursor--
     }
   }
+
   return cursor
 }
 
 
 const stepCursorAhead = (cursor:number, array:Array<any>, size:number) => {
+
   for(let iteration = 0; iteration < size; iteration++) {
     if(cursor >= array.length) {
       cursor = 0
     }
     cursor++
   }
+  
   return cursor
 }
