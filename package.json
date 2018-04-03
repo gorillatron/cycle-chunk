@@ -1,0 +1,14 @@
+{
+  "name": "cycle-chunk",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "compile": "tsc --declaration",
+    "test": "tsc --declaration && ava ./dist/test.js"
+  },
+  "devDependencies": {
+    "ava": "^0.25.0"
+  }
+}
