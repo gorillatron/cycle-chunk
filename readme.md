@@ -1,5 +1,5 @@
 
-# cycle-chunk
+# cycle-chunk [![build status](https://travis-ci.org/gorillatron/cycle-chunk.svg?branch=master)](https://travis-ci.org/gorillatron/cycle-chunk.svg?branch=master)
 
 Cycle through an array indefinetly providing a chunk of custom size per iteration.
 Usefull in showing slideshows, panels, tabs and so forth.
